@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ErrorModelObject {
+public class ErrorModel {
 
-    private Long statusCode;
+    private Integer statusCode;
     private String errorMessage;
 }

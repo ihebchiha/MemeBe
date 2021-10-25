@@ -10,5 +10,7 @@ public class RegistrationRequest {
     String email;
     String username;
     String password;
+    String creationDate;
+    String role;
 
 }

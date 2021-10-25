@@ -1,13 +1,12 @@
-package com.gobeyond.memebe.domain.dto;
+package com.gobeyond.memebe.domain.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class UserDto {
-    private RoleDto role;
-    private String email;
+public class LoginRequest {
+
     private String username;
     private String password;
 }
