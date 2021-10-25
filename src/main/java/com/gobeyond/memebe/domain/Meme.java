@@ -23,6 +23,7 @@ public class Meme {
     private String id;
 
     @URL
+    @NotBlank
     private String memeUrl;
 
     @NotBlank
@@ -38,6 +39,6 @@ public class Meme {
     private Long likes;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 }

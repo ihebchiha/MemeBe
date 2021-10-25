@@ -5,27 +5,31 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import com.gobeyond.memebe.enumeration.UserRole;
-
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.Getter;
+
+@Getter
 @Entity
 @Table(name = "t_tole")
 public class Role {
     @Id
     @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "id", strategy = "uuid2")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
     @NotBlank
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private String name;
 
-    @OneToOne(mappedBy = "id_user")
-    private User user;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "account_id")
+    private Account account;
 
 }
