@@ -1,4 +1,4 @@
-package com.gobeyond.memebe.memebe.security;
+package com.gobeyond.memebe.security;
 
 import java.io.IOException;
 
@@ -14,8 +14,8 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
-        
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+
     }
-    
+
 }

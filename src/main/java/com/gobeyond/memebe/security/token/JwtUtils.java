@@ -1,10 +1,9 @@
-package com.gobeyond.memebe.memebe.security.token;
+package com.gobeyond.memebe.security.token;
 
-import java.sql.Date;
+import java.util.Date;
 
-import com.gobeyond.memebe.memebe.service.impl.UserDetailsServiceImpl;
+import com.gobeyond.memebe.service.impl.UserDetailsServiceImpl;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -30,10 +29,9 @@ public class JwtUtils {
 	public String generateJwtToken(Authentication authentication) {
 
 		UserDetailsServiceImpl userPrincipal = (UserDetailsServiceImpl) authentication.getPrincipal();
-
-		return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date(jwtExpirationMs).getTime())
-				.setExpiration(new Date().getTime() + jwtExpirationMs).signWith(SignatureAlgorithm.HS512, jwtSecret)
-				.compact();
+		long expirationDate = new Date().getTime() + jwtExpirationMs;
+		return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date(jwtExpirationMs))
+				.setExpiration(new Date(expirationDate)).signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
 	public String getUserNameFromJwtToken(String token) {
