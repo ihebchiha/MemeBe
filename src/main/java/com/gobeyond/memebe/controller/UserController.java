@@ -1,5 +1,15 @@
 package com.gobeyond.memebe.controller;
 
+import javax.validation.Valid;
+
+import com.gobeyond.memebe.domain.dto.UserDto;
+import com.gobeyond.memebe.domain.dto.request.RegistrationRequest;
+import com.gobeyond.memebe.service.UserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,4 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegistrationRequest request) {
+        return ResponseEntity.ok(userService.registerUser(request));
+    }
 }
