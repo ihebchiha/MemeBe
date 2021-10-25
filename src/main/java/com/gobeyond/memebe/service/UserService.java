@@ -1,8 +1,14 @@
-package com.gobeyond.memebe.memebe.service;
+package com.gobeyond.memebe.service;
 
 import com.gobeyond.memebe.domain.dto.UserDto;
+import com.gobeyond.memebe.domain.dto.request.RegistrationRequest;
 
-public interface UserService {
+import org.springframework.security.core.userdetails.UserDetails;
 
-    UserDto getUserByUsername(String username);
+public interface UserService extends UserDetails {
+
+    UserDetails getUserByUsername(String username);
+
+    UserDto registerUser(RegistrationRequest request);
+
 }
