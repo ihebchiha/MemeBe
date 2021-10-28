@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.gobeyond.memebe.domain.dto.UserDto;
 import com.gobeyond.memebe.domain.dto.request.RegistrationRequest;
+import com.gobeyond.memebe.domain.dto.response.RegistrationResponse;
 import com.gobeyond.memebe.service.AccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class UserController {
     private AccountService accountService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegistrationRequest request) {
+    public ResponseEntity<RegistrationResponse> registerUser(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(accountService.registerUser(request));
     }
 }
