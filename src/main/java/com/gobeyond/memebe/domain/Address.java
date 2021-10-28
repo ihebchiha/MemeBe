@@ -1,25 +1,21 @@
 package com.gobeyond.memebe.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "t_address")
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(unique = true)
     private String id;
 
     @NotBlank
@@ -35,8 +31,7 @@ public class Address {
     @NotNull
     private Long postalCode;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "account_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 }

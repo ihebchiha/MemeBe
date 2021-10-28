@@ -1,6 +1,7 @@
 package com.gobeyond.memebe.domain;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,20 +18,25 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.gobeyond.memebe.enumeration.Rank;
 
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
+@Data
 @Entity
 @Table(name = "t_account")
 class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(unique = true)
     private String id;
 
     @Pattern(regexp = "")
@@ -41,21 +47,22 @@ class Account {
 
     @NotBlank
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "Varchar(25) default Rookie")
     private Rank rank;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User user;
+    @NotNull
+    @Column(columnDefinition = "integer default 0")
+    private Long points;
 
     @OneToMany(mappedBy = "id")
     private List<Meme> memes;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "account")
+    private User user;
+
+    @OneToOne(mappedBy = "account")
     private Address address;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "account")
     private Role role;
 }
