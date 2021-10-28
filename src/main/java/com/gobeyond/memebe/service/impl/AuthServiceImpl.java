@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public TokenDto authenticateUser(LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -38,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return TokenDto.builder().accessToken(jwt).authType(authentication.getName()).role(roles.get(0)).build();

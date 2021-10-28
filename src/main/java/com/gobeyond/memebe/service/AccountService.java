@@ -1,8 +1,8 @@
 package com.gobeyond.memebe.service;
 
-import com.gobeyond.memebe.domain.dto.UserDto;
 import com.gobeyond.memebe.domain.dto.request.RegistrationRequest;
+import com.gobeyond.memebe.domain.dto.response.RegistrationResponse;
 
 public interface AccountService {
-    UserDto registerUser(RegistrationRequest request);
+    RegistrationResponse registerUser(RegistrationRequest request);
 }

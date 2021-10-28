@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private String id;
 
     private String username;
 
@@ -26,7 +26,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(String id, String username, String email, String password,
             Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -36,10 +36,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-
-        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
+        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), null);
     }
 
     @Override
@@ -47,7 +44,7 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
