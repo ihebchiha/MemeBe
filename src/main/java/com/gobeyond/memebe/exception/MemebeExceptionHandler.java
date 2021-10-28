@@ -21,4 +21,26 @@ public class MemebeExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, errorModelObject, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
+    @ExceptionHandler(value = {BusinessException.class})
+    public ResponseEntity<Object> handleBusinessException(BusinessException businessException, RuntimeException exception, WebRequest request){
+        ErrorModel errorModel = ErrorModel
+                .builder()
+                .statusCode(businessException.getStatusCode())
+                .errorMessage(businessException.getMessage())
+                .build();
+
+        return handleExceptionInternal(businessException, errorModel, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    public ResponseEntity<Object> handleBusinessException(IllegalArgumentException illegalArgumentException, RuntimeException exception, WebRequest request){
+        ErrorModel errorModel = ErrorModel
+                .builder()
+                .statusCode(400)
+                .errorMessage(illegalArgumentException.getMessage())
+                .build();
+
+        return handleExceptionInternal(illegalArgumentException, errorModel, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
 }
