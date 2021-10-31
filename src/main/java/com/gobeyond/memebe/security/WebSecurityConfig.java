@@ -31,6 +31,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;
 
+	private static final String[] AUTH_WHITELIST = {
+			// -- swagger ui
+			"/swagger-resources/**",
+			"/swagger-ui.html",
+			"/v2/api-docs",
+			"/webjars/**"
+	};
+
 	@Bean
 	public JwtFilter authenticationJwtTokenFilter() {
 		return new JwtFilter();
@@ -64,7 +72,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web){
-		web.ignoring().regexMatchers("/api/auth/.*");
+		web.ignoring()
+				.regexMatchers("/api/auth/.*")
+				.antMatchers(AUTH_WHITELIST);
+
 	}
 
 }
