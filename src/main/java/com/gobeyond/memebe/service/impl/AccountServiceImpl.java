@@ -6,6 +6,7 @@ import com.gobeyond.memebe.domain.dto.RoleDto;
 import com.gobeyond.memebe.domain.dto.UserDto;
 import com.gobeyond.memebe.domain.dto.request.RegistrationRequest;
 import com.gobeyond.memebe.domain.dto.response.RegistrationResponse;
+import com.gobeyond.memebe.enumeration.Rank;
 import com.gobeyond.memebe.enumeration.UserRole;
 import com.gobeyond.memebe.exception.BusinessException;
 import com.gobeyond.memebe.exception.ResourceNotFoundException;
@@ -64,6 +65,8 @@ public class AccountServiceImpl implements AccountService {
             userDto.setPassword(passwordEncoder.encode(request.getPassword()));
             userDto.setRole(RoleDto.builder().role(request.getRole()).build());
             userDto.setCreationDate(request.getCreationDate());
+            userDto.setRank(Rank.ROOKIE);
+            userDto.setPoints(0L);
         }
 
         User savedUser =userDao.save(userMapper.toEntity(userDto));

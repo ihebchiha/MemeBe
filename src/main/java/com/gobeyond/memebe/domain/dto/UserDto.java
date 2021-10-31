@@ -1,6 +1,7 @@
 package com.gobeyond.memebe.domain.dto;
 
 import com.fasterxml.jackson.databind.DatabindException;
+import com.gobeyond.memebe.enumeration.Rank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,4 +20,7 @@ public class UserDto {
     private String username;
     private String password;
     private Date creationDate;
+    private Rank rank;
+    private Long points;
+    private Boolean hasAccount;
 }
