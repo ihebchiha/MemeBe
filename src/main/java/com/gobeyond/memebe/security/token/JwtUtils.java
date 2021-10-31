@@ -27,8 +27,6 @@ public class JwtUtils {
 	private int jwtExpirationMs;
 
 	public String generateJwtToken(Authentication authentication) {
-
-		UserDetailsServiceImpl userPrincipal = (UserDetailsServiceImpl) authentication.getPrincipal();
 		long expirationDate = new Date().getTime() + jwtExpirationMs;
 		return Jwts.builder().setSubject(authentication.getName()).setIssuedAt(new Date(jwtExpirationMs))
 				.setExpiration(new Date(expirationDate)).signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
