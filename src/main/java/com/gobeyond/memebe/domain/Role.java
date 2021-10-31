@@ -22,8 +22,4 @@ public class Role {
     @NotBlank
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
 }

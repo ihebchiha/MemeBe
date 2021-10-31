@@ -1,20 +1,17 @@
 package com.gobeyond.memebe.domain;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
+import com.gobeyond.memebe.enumeration.Rank;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,18 +38,34 @@ public class User {
     private String password;
 
     @Column(name ="has_account")
-    private boolean hasAccount;
+    private Boolean hasAccount;
 
+    @NotNull
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
-    @OneToOne(mappedBy = "user")
-    private Account account;
+    @Size(max = 12)
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @NotBlank
+    @Enumerated(EnumType.STRING)
+    private Rank rank;
+
+    @NotNull
+    private Long points;
+
+    @OneToMany(mappedBy = "user")
+    private List<Meme> memes;
+
 
     @OneToOne(mappedBy = "user")
     private Address address;
 
-    @OneToOne(mappedBy = "user")
-    private Role role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 }
