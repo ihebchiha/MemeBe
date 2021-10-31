@@ -1,6 +1,7 @@
 package com.gobeyond.memebe.service.impl;
 
 import com.gobeyond.memebe.dao.UserDao;
+import com.gobeyond.memebe.domain.User;
 import com.gobeyond.memebe.domain.dto.RoleDto;
 import com.gobeyond.memebe.domain.dto.UserDto;
 import com.gobeyond.memebe.domain.dto.request.RegistrationRequest;
@@ -10,12 +11,11 @@ import com.gobeyond.memebe.exception.BusinessException;
 import com.gobeyond.memebe.exception.ResourceNotFoundException;
 import com.gobeyond.memebe.mapper.UserMapper;
 import com.gobeyond.memebe.service.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gobeyond.memebe.service.RoleService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,14 +23,20 @@ import java.util.List;
 @Transactional
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    private final RoleService roleService;
+
+    public AccountServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, UserMapper userMapper, RoleService roleService) {
+        this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
+        this.roleService = roleService;
+    }
 
     @Override
     public RegistrationResponse registerUser(RegistrationRequest request) {
@@ -57,10 +63,11 @@ public class AccountServiceImpl implements AccountService {
             userDto.setUsername(request.getUsername());
             userDto.setPassword(passwordEncoder.encode(request.getPassword()));
             userDto.setRole(RoleDto.builder().role(request.getRole()).build());
-            userDto.setCreationDate(LocalDateTime.now());
+            userDto.setCreationDate(request.getCreationDate());
         }
 
-        userDao.save(userMapper.toEntity(userDto));
+        User savedUser =userDao.save(userMapper.toEntity(userDto));
+
 
         return RegistrationResponse
                 .builder()

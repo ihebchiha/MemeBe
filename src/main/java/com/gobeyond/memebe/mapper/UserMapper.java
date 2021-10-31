@@ -10,8 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
+
+    public UserMapper(ModelMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public UserDto toDto(User user) {
         return mapper.map(user, UserDto.class);

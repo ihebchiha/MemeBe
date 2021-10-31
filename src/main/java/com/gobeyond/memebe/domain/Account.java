@@ -39,7 +39,6 @@ class Account {
     @Column(unique = true)
     private String id;
 
-    @Pattern(regexp = "")
     @NotBlank
     @Size(max = 12)
     @Column(name = "phone_number")
@@ -47,22 +46,16 @@ class Account {
 
     @NotBlank
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "Varchar(25) default Rookie")
     private Rank rank;
 
     @NotNull
-    @Column(columnDefinition = "integer default 0")
     private Long points;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "account")
     private List<Meme> memes;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToOne(mappedBy = "account")
-    private Address address;
-
-    @OneToOne(mappedBy = "account")
-    private Role role;
 }

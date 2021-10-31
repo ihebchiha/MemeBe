@@ -1,11 +1,13 @@
 package com.gobeyond.memebe.domain.dto;
 
+import com.fasterxml.jackson.databind.DatabindException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -16,5 +18,5 @@ public class UserDto {
     private String email;
     private String username;
     private String password;
-    private LocalDateTime creationDate;
+    private Date creationDate;
 }

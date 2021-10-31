@@ -4,7 +4,9 @@ import com.gobeyond.memebe.domain.Role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface RoleDao extends JpaRepository<Role, String> {
 
-    Role findRoleByName(String role);
+    Optional<Role> findRoleByName(String role);
 }

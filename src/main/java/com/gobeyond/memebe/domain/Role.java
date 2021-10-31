@@ -23,7 +23,7 @@ public class Role {
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
 }

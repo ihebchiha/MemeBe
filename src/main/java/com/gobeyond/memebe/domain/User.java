@@ -40,14 +40,19 @@ public class User {
     @Size(max = 255)
     private String password;
 
-    @NotNull
-    @Column(columnDefinition = "boolean default false")
-    private Boolean hasAccount;
+    @Column(name ="has_account")
+    private boolean hasAccount;
 
-    @NotBlank
-    private LocalDateTime creationDate;
+    @Column(name = "creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user")
     private Account account;
+
+    @OneToOne(mappedBy = "user")
+    private Address address;
+
+    @OneToOne(mappedBy = "user")
+    private Role role;
 }
