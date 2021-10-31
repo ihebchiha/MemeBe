@@ -17,12 +17,17 @@ public class MemebeExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = { UsernameNotFoundException.class })
     public ResponseEntity<Object> handleUsernameNotFound(UsernameNotFoundException exception, RuntimeException ex,
             WebRequest request) {
-        ErrorModel errorModelObject = ErrorModel.builder().statusCode(100).errorMessage(exception.getMessage()).build();
+
+        ErrorModel errorModelObject = ErrorModel
+                .builder()
+                .statusCode(100)
+                .errorMessage(exception.getMessage()).build();
+
         return handleExceptionInternal(ex, errorModelObject, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(value = {BusinessException.class})
-    public ResponseEntity<Object> handleBusinessException(BusinessException businessException, RuntimeException exception, WebRequest request){
+    public ResponseEntity<Object> handleBusinessException(BusinessException businessException, WebRequest request){
         ErrorModel errorModel = ErrorModel
                 .builder()
                 .statusCode(businessException.getStatusCode())
@@ -33,7 +38,8 @@ public class MemebeExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
-    public ResponseEntity<Object> handleBusinessException(IllegalArgumentException illegalArgumentException, RuntimeException exception, WebRequest request){
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException, WebRequest request){
+
         ErrorModel errorModel = ErrorModel
                 .builder()
                 .statusCode(400)
@@ -41,6 +47,18 @@ public class MemebeExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(illegalArgumentException, errorModel, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {ResourceNotFoundException.class})
+    public ResponseEntity<Object> handleIllegalArgumentException(ResourceNotFoundException resourceNotFoundException, WebRequest request){
+
+        ErrorModel errorModel = ErrorModel
+                .builder()
+                .statusCode(102)
+                .errorMessage(resourceNotFoundException.getMessage())
+                .build();
+
+        return handleExceptionInternal(resourceNotFoundException, errorModel, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
 }
