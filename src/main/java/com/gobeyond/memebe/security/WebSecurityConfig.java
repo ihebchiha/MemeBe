@@ -25,11 +25,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+	final UserDetailsServiceImpl userDetailsService;
 
-	@Autowired
-	private AuthEntryPointJwt unauthorizedHandler;
+	private final AuthEntryPointJwt unauthorizedHandler;
 
 	private static final String[] AUTH_WHITELIST = {
 			// -- swagger ui
@@ -38,6 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			"/v2/api-docs",
 			"/webjars/**"
 	};
+
+	public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
+		this.userDetailsService = userDetailsService;
+		this.unauthorizedHandler = unauthorizedHandler;
+	}
 
 	@Bean
 	public JwtFilter authenticationJwtTokenFilter() {
@@ -75,7 +78,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 				.regexMatchers("/api/auth/.*")
 				.antMatchers(AUTH_WHITELIST);
-
 	}
 
 }
