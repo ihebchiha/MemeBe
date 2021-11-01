@@ -11,6 +11,7 @@ import com.gobeyond.memebe.domain.dto.request.LoginRequest;
 import com.gobeyond.memebe.security.token.JwtUtils;
 import com.gobeyond.memebe.service.AuthService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @Transactional
 public class AuthServiceImpl implements AuthService {
@@ -42,10 +44,16 @@ public class AuthServiceImpl implements AuthService {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+        List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        return TokenDto.builder().accessToken(jwt).authType(authentication.getName()).role(roles.get(0)).build();
+        log.info("Details:" + authentication.getDetails());
+        log.info("Authorities:" + authentication.getAuthorities());
+        return TokenDto.builder()
+                .accessToken(jwt)
+                .authType("Bearer")
+                .role(roles.get(0))
+                .build();
     }
 
 }

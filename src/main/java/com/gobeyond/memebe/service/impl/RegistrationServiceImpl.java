@@ -11,7 +11,7 @@ import com.gobeyond.memebe.enumeration.UserRole;
 import com.gobeyond.memebe.exception.BusinessException;
 import com.gobeyond.memebe.exception.ResourceNotFoundException;
 import com.gobeyond.memebe.mapper.UserMapper;
-import com.gobeyond.memebe.service.AccountService;
+import com.gobeyond.memebe.service.RegistrationService;
 import com.gobeyond.memebe.service.RoleService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AccountServiceImpl implements AccountService {
+public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserDao userDao;
 
@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final RoleService roleService;
 
-    public AccountServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, UserMapper userMapper, RoleService roleService) {
+    public RegistrationServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, UserMapper userMapper, RoleService roleService) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
@@ -65,11 +65,11 @@ public class AccountServiceImpl implements AccountService {
             userDto.setPassword(passwordEncoder.encode(request.getPassword()));
             userDto.setRole(RoleDto.builder().role(request.getRole()).build());
             userDto.setCreationDate(request.getCreationDate());
-            userDto.setRank(Rank.ROOKIE);
+            userDto.setRank(Rank.ROOKIE.name());
             userDto.setPoints(0L);
         }
 
-        User savedUser =userDao.save(userMapper.toEntity(userDto));
+        User savedUser = userDao.save(userMapper.toEntity(userDto));
 
 
         return RegistrationResponse
