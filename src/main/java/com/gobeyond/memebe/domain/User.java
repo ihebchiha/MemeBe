@@ -30,15 +30,25 @@ public class User {
 
     @NotBlank
     @Size(max = 50)
+    @Column(name = "first_name")
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birthdate;
+
+    @NotBlank
+    @Size(max = 50)
     @Email
     private String email;
 
     @NotBlank
     @Size(max = 255)
     private String password;
-
-    @Column(name ="has_account")
-    private Boolean hasAccount;
 
     @NotNull
     @Column(name = "creation_date")
@@ -50,8 +60,7 @@ public class User {
     private String phoneNumber;
 
     @NotBlank
-    @Enumerated(EnumType.STRING)
-    private Rank rank;
+    private String rank;
 
     @NotNull
     private Long points;
@@ -63,7 +72,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Address address;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
