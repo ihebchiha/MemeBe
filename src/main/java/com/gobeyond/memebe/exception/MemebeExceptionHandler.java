@@ -61,4 +61,16 @@ public class MemebeExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(resourceNotFoundException, errorModel, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(value = {FileUploadException.class})
+    public ResponseEntity<Object> handleIllegalArgumentException(FileUploadException fileUploadException, WebRequest request){
+
+        ErrorModel errorModel = ErrorModel
+                .builder()
+                .statusCode(fileUploadException.statusCode)
+                .errorMessage(fileUploadException.getMessage())
+                .build();
+
+        return handleExceptionInternal(fileUploadException, errorModel, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
 }
