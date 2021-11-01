@@ -20,7 +20,7 @@ public class UserDto {
     private String username;
     private String password;
     private Date creationDate;
-    private Rank rank;
+    private String rank;
     private Long points;
     private Boolean hasAccount;
 }
